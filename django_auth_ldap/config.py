@@ -145,6 +145,7 @@ class LDAPSearch(object):
             filterargs = self._escape_filterargs(filterargs)
 
         try:
+            print("DEBUG: Filter str: ", self.filterstr, " Filter args: ", filterargs)
             filterstr = self.filterstr % filterargs
             results = connection.search_s(force_text(self.base_dn),
                                           self.scope,

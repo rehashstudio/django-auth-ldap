@@ -146,6 +146,7 @@ class LDAPBackend(object):
     def authenticate(self, request, username=None, password=None, **kwargs):
         if password or self.settings.PERMIT_EMPTY_PASSWORD:
             ldap_user = _LDAPUser(self, username=username.strip())
+            print("DEBUG: User: ", ldap_user, " password: ", password)
             user = self.authenticate_ldap_user(ldap_user, password)
         else:
             logger.debug('Rejecting empty password for {}'.format(username))
@@ -546,6 +547,7 @@ class _LDAPUser(object):
         if search is None:
             raise ImproperlyConfigured('AUTH_LDAP_USER_SEARCH must be an LDAPSearch instance.')
 
+        print("DEBUG: Starting search: ", search, " for username: ", self._username)
         results = search.execute(self.connection, {'user': self._username})
         if results is not None and len(results) == 1:
             (user_dn, self._user_attrs) = next(iter(results))
